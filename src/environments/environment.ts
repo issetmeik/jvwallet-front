@@ -1,5 +1,5 @@
 export const environment = {
   production: false,
-  apiUrl: 'http://3.85.62.127:3333',
+  apiUrl: 'https://api.jvwallet.site',
   appName: 'jvwallet-dev',
 };
