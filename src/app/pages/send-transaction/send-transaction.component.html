@@ -1,0 +1,106 @@
+<div class="transaction-wrapper">
+  <div class="transaction-card">
+    <h2>Enviar Transação</h2>
+    <p>Preencha os detalhes para enviar sua transação</p>
+
+    <form [formGroup]="sendForm" (ngSubmit)="sendTransaction()">
+      <div class="input-group">
+        <label for="address">Address</label>
+        <input
+          id="address"
+          type="text"
+          formControlName="address"
+          placeholder="Digite o endereço de destino"
+          required
+        />
+        <small
+          class="error-msg"
+          *ngIf="
+            sendForm.get('address')?.invalid && sendForm.get('address')?.touched
+          "
+        >
+          Endereço inválido.
+        </small>
+      </div>
+
+      <div class="input-group">
+        <label for="amount">Valor</label>
+        <input
+          id="amount"
+          formControlName="amount"
+          mode="decimal"
+          placeholder="0.00001"
+          required
+        />
+        <small
+          class="error-msg"
+          *ngIf="
+            sendForm.get('amount')?.hasError('required') &&
+            sendForm.get('amount')?.touched
+          "
+        >
+          Informe um valor válido.
+        </small>
+        <small
+          class="error-msg"
+          *ngIf="
+            sendForm.get('amount')?.hasError('min') &&
+            sendForm.get('amount')?.touched
+          "
+        >
+          O valor não pode ser menor que 0.00001.
+        </small>
+
+        <small
+          class="error-msg"
+          *ngIf="
+            sendForm.get('amount')?.hasError('pattern') &&
+            sendForm.get('amount')?.touched
+          "
+        >
+          O valor deve ser numérico.
+        </small>
+      </div>
+
+      <div class="input-group">
+        <label for="password">Senha</label>
+        <input
+          id="password"
+          pInputText
+          type="password"
+          formControlName="password"
+          required
+          placeholder="Insira sua senha"
+        />
+        <small
+          class="error-msg"
+          *ngIf="
+            sendForm.get('password')?.invalid &&
+            sendForm.get('password')?.touched
+          "
+        >
+          Informe um valor válido.
+        </small>
+      </div>
+
+      <div class="">
+        <p-button
+          type="button"
+          label="Cancelar"
+          icon="pi pi-times"
+          class="p-button-outlined"
+          (click)="cancel()"
+        ></p-button>
+        <p-button
+          type="submit"
+          label="Enviar"
+          icon="pi pi-send"
+          class="btn-send"
+          [disabled]="sendForm.invalid"
+        ></p-button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<p-toast></p-toast>

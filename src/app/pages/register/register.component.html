@@ -1,0 +1,88 @@
+<div class="login-wrapper">
+  <div class="login-card">
+    <h2>JVWallet</h2>
+    <p>Crie sua conta na JVWallet</p>
+
+    <form [formGroup]="registerForm" (ngSubmit)="registerUser()">
+      <div class="input-group">
+        <label for="register-login">Usuário</label>
+        <input
+          id="register-login"
+          pInputText
+          type="text"
+          formControlName="login"
+          required
+        />
+        <small
+          class="error-msg"
+          *ngIf="
+            registerForm.get('login')?.invalid &&
+            registerForm.get('login')?.touched
+          "
+        >
+          Usuário é obrigatório.
+        </small>
+      </div>
+      <div class="input-group">
+        <label for="register-password">Senha</label>
+        <input
+          id="register-password"
+          pInputText
+          type="password"
+          formControlName="password"
+          required
+        />
+        <small
+          class="error-msg"
+          *ngIf="
+            registerForm.get('password')?.invalid &&
+            registerForm.get('password')?.touched
+          "
+        >
+          A senha deve ter pelo menos 6 caracteres.
+        </small>
+      </div>
+
+      <div class="input-group">
+        <label for="confirm-password">Confirmar Senha</label>
+        <input
+          id="confirm-password"
+          pInputText
+          type="password"
+          formControlName="confirmPassword"
+          required
+        />
+        <small
+          class="error-msg"
+          *ngIf="
+            registerForm.hasError('passwordsNotMatch') && registerForm.touched
+          "
+        >
+          As senhas não coincidem.
+        </small>
+      </div>
+
+      <!-- Botões alinhados -->
+      <div class="p-d-flex p-jc-between p-mt-3">
+        <p-button
+          type="submit"
+          label="Registrar"
+          icon="pi pi-check"
+          class="btn-register"
+          [disabled]="registerForm.invalid"
+        ></p-button>
+      </div>
+
+      <div class="text-center mt-6 login-footer">
+        <span class="text-600">
+          Já tem uma conta?
+          <a (click)="navigateToLogin()" class="login-link font-medium">
+            Faça login
+          </a>
+        </span>
+      </div>
+    </form>
+  </div>
+</div>
+
+<p-toast></p-toast>

@@ -1,0 +1,137 @@
+<div class="wallet-container">
+  <div class="wallet-header">
+    <p-dropdown
+      placeholder="Selecione uma carteira."
+      id="wallet-dropdown"
+      [options]="wallets"
+      optionLabel="name"
+      [(ngModel)]="selectedWallet"
+      (onChange)="loadWalletDetails()"
+    >
+      <ng-template pTemplate="footer">
+        <button
+          type="button"
+          pButton
+          icon="pi pi-plus"
+          label="Criar"
+          style="
+            width: 100%;
+            border-top-left-radius: 0px;
+            border-top-right-radius: 0px;
+          "
+          (click)="openDisplay()"
+        ></button>
+      </ng-template>
+    </p-dropdown>
+    <button
+      class="p-link layout-topbar-button btn-logout"
+      (click)="syncWallet()"
+      pTooltip="Sincronizar"
+      tooltipPosition="bottom"
+    >
+      <i class="pi pi-refresh"></i>
+    </button>
+    <button
+      class="p-link layout-topbar-button btn-logout"
+      (click)="logout()"
+      pTooltip="Sair"
+      tooltipPosition="bottom"
+    >
+      <i class="pi pi-sign-out"></i>
+    </button>
+  </div>
+
+  <div class="wallet-balance" *ngIf="selectedWallet">
+    <h3>Saldo Total</h3>
+    <p class="balance">
+      {{ convertToBTC(selectedWallet.balance) | number : "1.8-8" }} BTC
+    </p>
+
+    <p class="wallet-address">{{ selectedWallet.address }}</p>
+  </div>
+
+  <div class="wallet-actions" *ngIf="selectedWallet">
+    <p-button
+      icon="pi pi-send"
+      label="Enviar"
+      class="btn-action"
+      (click)="navigateToSend(selectedWallet.id)"
+    ></p-button>
+  </div>
+
+  <h3 class="transactions-title" *ngIf="selectedWallet">
+    Histórico de Transações
+  </h3>
+  <p-table
+    [value]="transactions"
+    responsiveLayout="scroll"
+    *ngIf="selectedWallet"
+    scrollable="true"
+    scrollHeight="250px"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th>De</th>
+        <th>Para</th>
+        <th>Valor</th>
+        <th>Detalhes</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-transaction>
+      <tr>
+        <td>{{ shortenAddress(transaction.fromAddress) }}</td>
+        <td>{{ shortenAddress(transaction.toAddress) }}</td>
+        <td>{{ formatAmount(convertToBTC(transaction.amount)) }}</td>
+        <td>
+          <a
+            [href]="'https://blockstream.info/testnet/tx/' + transaction.txid"
+            target="_blank"
+            class="p-text-secondary"
+            pTooltip="Ver detalhes da transação"
+            tooltipPosition="top"
+          >
+            <i class="pi pi-globe" style="font-size: 1.2rem"></i>
+          </a>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <p-dialog
+    header="Criar Wallet"
+    [modal]="true"
+    [(visible)]="display"
+    [style]="{ width: '25rem' }"
+  >
+    <span class="p-text-secondary block mb-4"
+      >Informe um nome para sua nova carteira.</span
+    >
+
+    <div class="flex items-center gap-4 mb-4">
+      <label for="walletName">Nome</label>
+      <input
+        pInputText
+        id="walletName"
+        class="flex-auto"
+        placeholder="Digite o nome"
+        [(ngModel)]="newWalletName"
+      />
+    </div>
+
+    <div class="flex justify-end gap-2">
+      <p-button
+        label="Cancelar"
+        severity="secondary"
+        (click)="display = false"
+      />
+      <p-button
+        label="Criar"
+        icon="pi pi-check"
+        [disabled]="newWalletName.length < 3"
+        (click)="newWallet()"
+      />
+    </div>
+  </p-dialog>
+</div>
+<p-toast></p-toast>

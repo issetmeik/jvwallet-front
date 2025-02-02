@@ -1,0 +1,68 @@
+/* Estilização do container principal */
+.wallet-container {
+  max-width: 500px;
+  margin: 50px auto;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 12px rgba(153, 147, 147, 0.1);
+  text-align: center;
+}
+
+/* Cabeçalho da carteira */
+.wallet-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+/* Saldo da carteira */
+.wallet-balance {
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.balance {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.wallet-address {
+  font-size: 0.9rem;
+}
+
+/* Botões de ação */
+.wallet-actions {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
+}
+
+.btn-action {
+  flex: 1;
+  margin: 0 5px;
+  border: none;
+}
+
+.btn-logout {
+  padding: 10px;
+}
+
+/* Título das transações */
+.transactions-title {
+  margin-top: 20px;
+  font-size: 1.2rem;
+}
+
+/* Tabela de transações */
+.transaction-table {
+  width: 100%;
+}
+
+th,
+td {
+  padding: 10px;
+  border-bottom: 1px solid;
+}
