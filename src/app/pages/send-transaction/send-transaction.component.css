@@ -75,3 +75,7 @@ p-toast {
 .login-footer {
   margin-top: 1.5rem;
 }
+
+.custom-padding {
+  padding-right: 10px;
+}

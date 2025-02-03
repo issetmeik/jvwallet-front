@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, inject } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
@@ -48,7 +48,8 @@ export class DashboardComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private route: ActivatedRoute,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private cdRef: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -139,6 +140,7 @@ export class DashboardComponent implements OnInit {
               this.selectedWallet = res.data;
               this.selectedWallet.id = res.data.id;
               this.selectedWallet.name = res.data.name;
+              this.transactions = this.selectedWallet.transactions || [];
             }
           });
       }
@@ -153,17 +155,17 @@ export class DashboardComponent implements OnInit {
 
     this.walletService.createWallet(this.newWalletName).subscribe({
       next: (response) => {
-        this.wallets.push(response.data);
+        this.wallets = [...this.wallets, response.data];
+
         this.newWalletName = '';
         this.selectedWallet = response.data;
+        this.selectedWallet.id = response.data.id;
+        this.selectedWallet.name = response.data.name;
         this.transactions = this.selectedWallet.transactions || [];
+        this.walletId = response.data.id;
+        this.cdRef.detectChanges();
         this.display = false;
         this.showMessage('success', 'Sucesso', 'Carteira criada com sucesso!');
-        this.router.navigate(['/dashboard'], {
-          queryParams: {
-            walletId: response.data.id,
-          },
-        });
       },
       error: (err) => {
         this.showMessage(
